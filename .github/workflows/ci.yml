@@ -1,0 +1,24 @@
+name: CI
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Generate build report
+        run: |
+          mkdir -p artifact
+          {
+            echo "Repo: ${{ github.repository }}"
+            echo "Run number: ${{ github.run_number }}"
+            echo "Date: $(date -u '+%Y-%m-%d %H:%M:%S UTC')"
+          } > artifact/build-info.txt
+          cat artifact/build-info.txt
+
+      - name: Upload build-info artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-info
+          path: artifact/build-info.txt
